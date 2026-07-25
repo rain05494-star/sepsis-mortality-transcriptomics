@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+title: "Code for a mortality-associated whole-blood transcriptomic signature in sepsis"
+message: "If you use this code, please cite the archived software release and the associated manuscript."
+type: software
+authors:
+  - family-names: Zhou
+    given-names: Yuting
+  - family-names: Xu
+    given-names: Tianwei
+  - family-names: Liu
+    given-names: Huan
+  - family-names: Wang
+    given-names: Yunong
+  - family-names: Wang
+    given-names: Rui
+ - family-names: Yaowei
+    given-names: Tong
+  - family-names: Song
+    given-names: Yunlin
+repository-code: "https://github.com/rain05494-star/sepsis-mortality-transcriptomics"
+license: MIT
+version: "1.0.0"
+date-released: "2026-07-25"
