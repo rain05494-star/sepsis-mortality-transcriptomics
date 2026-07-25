@@ -168,19 +168,7 @@ results_meta/
 ├── 07_tables/
 └── 08_Giannini_sensitivity/
 ```
-Depending on the final script version, folder names may differ slightly. The main output files include:
 
-- Discovery cohort differential expression results.
-- Fisher combined P-value and FDR tables.
-- 32-gene signature table.
-- External assessment tables for GSE65682.
-- Outcome-label permutation results.
-- PC1 and random-gene reference outputs.
-- Hallmark GSEA tables.
-- xCell enrichment-score tables.
-- MARS-stratified gene-level and module-level summaries.
-- Giannini E3 overlap and residual-gene sensitivity-analysis tables.
-- Exploratory Enrichr, DGIdb, and PubMed annotation outputs.
 ## Randomness and reproducibility
 
 Random seeds are set in the analysis script for:
@@ -200,7 +188,7 @@ The following public resources were used:
 |---|---|---|
 | GEO | Public expression datasets and platform annotations | July 19, 2026 |
 | MSigDB Hallmark via `msigdbr` | Hallmark GSEA gene sets | July 19, 2026 |
-| Enrichr | Transcription factor target-set enrichment and exploratory perturbational annotation | [TODO: date] |
+| Enrichr | Transcription factor target-set enrichment and exploratory perturbational annotation | July 19, 2026 |
 | DGIdb v5 | Curated drug-gene interaction records | July 19, 2026 |
 | PubMed E-utilities | Bibliometric counts for sepsis-related compound mentions | Publication-date cutoff: July 19, 2026 |
 
