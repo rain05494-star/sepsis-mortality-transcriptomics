@@ -1,0 +1,27 @@
+GEO accessions used in the sepsis mortality whole-blood transcriptomics analysis
+
+GSE272769
+Role in this study: Discovery cohort
+Sample type: Whole-blood transcriptomic profiles from critically ill patients with sepsis
+Endpoint used in this study: 30-day mortality
+URL: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE272769
+
+GSE95233
+Role in this study: Discovery cohort
+Sample type: Whole-blood transcriptomic profiles
+Included samples: Day-1 samples only
+Endpoint used in this study: 28-day mortality
+URL: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE95233
+
+GSE65682
+Role in this study: External assessment cohort
+Sample type: Whole-blood transcriptomic profiles from patients with sepsis
+Endpoint used in this study: 28-day mortality
+Additional metadata used in this study: Published Mars1-Mars4 endotype annotations
+URL: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE65682
+
+Notes:
+- All datasets are publicly available from GEO.
+- No new human participant data were generated in this study.
+- Raw GEO data files are not redistributed in this repository.
+- Users should download the required GEO files directly from GEO and place them in the local data/ directory before running the analysis script.
