@@ -1,4 +1,6 @@
-GEO accessions used in the sepsis mortality whole-blood transcriptomics analysis
+GEO datasets used in the sepsis mortality transcriptomics study
+
+BULK TRANSCRIPTOMIC DATASETS
 
 GSE272769
 Role in this study: Discovery cohort
@@ -9,19 +11,47 @@ URL: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE272769
 GSE95233
 Role in this study: Discovery cohort
 Sample type: Whole-blood transcriptomic profiles
-Included samples: Day-1 samples only
+Included samples: Admission (day-1) samples only
 Endpoint used in this study: 28-day mortality
 URL: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE95233
 
 GSE65682
-Role in this study: External assessment cohort
+Role in this study: External assessment cohort and exploratory MARS endotype analyses
 Sample type: Whole-blood transcriptomic profiles from patients with sepsis
 Endpoint used in this study: 28-day mortality
 Additional metadata used in this study: Published Mars1-Mars4 endotype annotations
 URL: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE65682
 
-Notes:
-- All datasets are publicly available from GEO.
-- No new human participant data were generated in this study.
-- Raw GEO data files are not redistributed in this repository.
-- Users should download the required GEO files directly from GEO and place them in the local data/ directory before running the analysis script.
+
+SINGLE-CELL REFERENCE DATASET
+
+GSE216009
+Role in this study: Single-cell reference mapping and supplementary condition comparisons
+Sample type: Whole-blood single-cell transcriptomic data
+Primary mapping subset: 151,837 acute-infection cells from 26 donors
+Reference annotations: Source-defined fine cell-state annotations
+Additional samples used in supplementary analyses: Convalescent, healthy-control, and surgery-control samples
+Mortality outcomes: Not available in the single-cell reference used in this study
+URL: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE216009
+
+
+DATA ACCESS AND INPUT CONFIGURATION
+
+- All four GEO accession records are publicly accessible.
+- No new primary datasets were generated in this study.
+- The analyses used processed expression data and associated metadata.
+- Bulk analyses require expression matrices, platform annotations, and the sample metadata specified by the scripts.
+- Single-cell analyses require the processed reference object and its cell-state and sample metadata.
+- Obtain the required files from the GEO records and any source-study repositories linked from those records.
+- Set input paths in the configuration sections of the relevant scripts to match your local file locations.
+- Bulk analysis scripts are organized under code/bulk/.
+- Single-cell analysis scripts are organized under code/SCRNA/.
+- This accession list identifies the datasets; exact input filenames and execution instructions should be provided in the relevant README files.
+
+
+ADDITIONAL REFERENCE GENE SET
+
+The Giannini E3 gene set was obtained from the supplementary file
+TableE3_Transcohort_DE_Genes.xlsx accompanying the Giannini study cited
+in the manuscript. It is a published reference gene set, not an
+additional GEO dataset.
