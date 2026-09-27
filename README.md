@@ -1,143 +1,137 @@
-# Sepsis mortality whole-blood transcriptomic signature
+# Sepsis mortality transcriptomics and single-cell reference mapping
 
-This repository contains the analysis code accompanying the manuscript:
+Analysis code and data-source documentation for the manuscript:
 
-**Two-cohort discovery and external assessment of a mortality-associated whole-blood transcriptomic signature in sepsis.**
+**Cross-cohort and single-cell analyses characterize proliferative and granule-associated components of mortality-associated transcription in sepsis**
 
-The study identifies an operationally defined whole-blood transcriptomic signature associated with short-term sepsis mortality using two discovery cohorts and evaluates its directional reproducibility, biological context, overlap with prior cross-cohort evidence, and descriptive MARS endotype-related variation in an external cohort.
-## Repository contents
-```text
-sepsis-mortality-transcriptomics/
-│
-├── README.md
-├── LICENSE
-├── CITATION.cff
-├── .gitignore
-├── code/
-│   └── sepsis_mortality_transcriptomics_analysis.R
-├── data/
-│   └── README.md
-├── metadata/
-│   ├── GEO_accessions.txt
-│   └── Giannini_E3_gene_set.csv
-├── environment/
-│   ├── sessionInfo.txt
-│   └── package_versions.csv
-└── docs/
-    └── analysis_workflow.md
-```
-Only the analysis code, metadata needed to reproduce the analyses, and environment information are included in this repository. Public GEO expression data are not redistributed here and should be downloaded directly from GEO.
 ## Study overview
 
-The analysis uses public whole-blood transcriptomic datasets from the Gene Expression Omnibus (GEO):
+This study integrates gene-level evidence from two whole-blood discovery
+cohorts, assesses the resulting signature in a third mortality cohort,
+and maps the signature to a single-cell reference.
 
-- **GSE272769**: discovery cohort; critically ill patients with sepsis; 30-day mortality endpoint.
-- **GSE95233**: discovery cohort; day-1 samples only; 28-day mortality endpoint.
-- **GSE65682**: external assessment cohort; 28-day mortality endpoint and published MARS endotype annotations.
-The code is intended to reproduce the main tables, supplementary tables, and figure source outputs used in the manuscript. Minor numerical differences may occur if online databases are updated after the stated access dates.
-## Data availability
+The analysis distinguishes relative program scores from
+captured-transcript contributions across reference cell states.
 
-The datasets analyzed in this study are publicly available from GEO:
+The main analytical components are:
 
-| Dataset | GEO accession | Role in this study |
-|---|---|---|
-| GSE272769 | https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE272769 | Discovery cohort |
-| GSE95233 | https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE95233 | Discovery cohort; day-1 samples |
-| GSE65682 | https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE65682 | External assessment cohort |
+- Cross-cohort identification of a 32-gene mortality-associated signature.
+- External assessment of gene-level effect directions and effect estimates.
+- Functional annotation of investigator-defined proliferative
+  (P-program) and granule-associated (G-program) gene sets.
+- Comparison with the published Giannini E3 gene set.
+- Donor-aware single-cell reference mapping of gene expression,
+  program scores, and captured-transcript contributions.
+- Sensitivity analyses of gene-set composition and reference-state mapping.
+- Supplementary acute–convalescent comparisons.
+- Exploratory mortality contrasts across MARS endotypes.
 
-No new human participant data were generated for this study.
-## Required input files
+## Repository organization
 
-Download the GEO Series Matrix files and the corresponding platform annotation files from GEO.
+Scripts are organized by analysis type:
 
-Place downloaded files under:
+| Location | Contents |
+| --- | --- |
+| [code/bulk](code/bulk/) | Bulk transcriptomic analysis scripts |
+| [code/SCRNA](code/SCRNA/) | Single-cell reference analysis scripts |
+| [data/GEO_accessions.txt](data/GEO_accessions.txt) | Dataset accessions and study roles |
+| [data/README.md](data/README.md) | Data sources and input preparation |
+| [environment](environment/) | Software environment records |
+| [CITATION.cff](CITATION.cff) | Software citation metadata |
+| [LICENSE](LICENSE) | Repository license |
 
-```text
-data/
-├── GSE272769_series_matrix.txt.gz
-├── GSE95233_series_matrix.txt.gz
-├── GSE65682_series_matrix.txt.gz
-├── GPLxxxx_annotation_file_for_GSE272769.txt.gz
-├── GPLxxxx_annotation_file_for_GSE95233.txt.gz
-└── GPL13667_annotation_file_for_GSE65682.txt.gz
-```
-# The exact GEO filenames may differ depending on the download route. If filenames differ from those expected in the script, update the file path variables in the configuration section of:
-```text
-code/sepsis_mortality_transcriptomics_analysis.R
-```
-## External metadata
+Script filenames, their roles, and execution order should be documented
+in the README files for the corresponding code directories.
 
-The overlap-exclusion sensitivity analysis uses the published Giannini E3 mortality-associated gene set.
-```text
-metadata/Giannini_E3_gene_set.csv
-```
-Recommended columns are:
+## Datasets
 
-```text
-gene_symbol
-giannini_messi_log2fc
-giannini_mars_log2fc
-```
-If the script uses a different column naming convention, use the format specified in the header comments of the analysis script.
-This comparison is a sensitivity analysis of gene-set dependence and should not be interpreted as independent external replication, because the present study and the Giannini study share public datasets.
-## Software requirements
+| Dataset | Role in this study | Outcome or reference information |
+| --- | --- | --- |
+| [GSE272769](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE272769) | Discovery cohort | 30-day mortality |
+| [GSE95233](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE95233) | Discovery cohort; admission day-1 samples | 28-day mortality |
+| [GSE65682](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE65682) | External assessment and exploratory endotype analyses | 28-day mortality and published MARS annotations |
+| [GSE216009](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE216009) | Single-cell reference mapping | Source-defined cell-state and sample annotations |
 
-The analysis was performed in R.
+Primary single-cell mapping uses 151,837 acute-infection cells from
+26 donors. Supplementary analyses also use convalescent,
+healthy-control, and surgery-control samples.
 
-Recommended R version:
+Mortality outcomes were unavailable in the single-cell reference used
+for this study.
 
-```text
-R >= 4.5.0
-The following R packages are required:
-```text
-GEOquery
-limma
-metafor
-clusterProfiler
-org.Hs.eg.db
-fgsea
-msigdbr
-xCell
-enrichR
-pROC
-httr
-jsonlite
-rentrez
-ggplot2
-ggrepel
-dplyr
-tidyr
-reshape2
-pheatmap
-patchwork
-VennDiagram
-```
-The exact software environment used for the manuscript is recorded in:
+No new primary datasets were generated.
 
-```text
-environment/sessionInfo.txt
-environment/package_versions.csv
-```
-Before running the full analysis, install missing packages using Bioconductor or CRAN as appropriate.
-Example:
-```text
-install.packages(c(
-  "ggplot2", "ggrepel", "dplyr", "tidyr", "reshape2",
-  "pheatmap", "patchwork", "VennDiagram", "metafor",
-  "pROC", "httr", "jsonlite", "rentrez"
-))
+## Input preparation
 
-if (!requireNamespace("BiocManager", quietly = TRUE)) {
-  install.packages("BiocManager")
-}
+### Bulk transcriptomic analyses
 
-BiocManager::install(c(
-  "GEOquery", "limma", "clusterProfiler", "org.Hs.eg.db",
-  "fgsea", "msigdbr"
-))
-```
-The xCell package may require installation according to its current distribution route.
-## Running the analysis
+Required inputs include:
+
+- Processed expression matrices.
+- Platform annotations for probe-to-gene mapping.
+- Sample metadata and mortality outcomes.
+- Published MARS endotype annotations for the relevant GSE65682 samples.
+- The published Giannini E3 reference gene set.
+
+The GSE95233 discovery analysis uses admission day-1 samples only.
+
+### Single-cell reference analyses
+
+The analyses require the processed GSE216009 reference object,
+including the RNA counts and source-defined cell-state and sample metadata.
+
+The local object filename used in the analysis scripts is:
+
+`GSE216009_rhapsody_wholeblood_sobj.rds.gz`
+
+This is the local filename expected by the scripts, not a verified
+GEO download filename.
+
+The supplied single-cell scripts use metadata fields including
+`fine_annot`, `sample_id`, and `diagnosis`.
+
+A raw count matrix alone does not contain all annotations required
+by the mapping workflow.
+
+### Giannini E3 reference set
+
+The E3 reference set was obtained from:
+
+`TableE3_Transcohort_DE_Genes.xlsx`
+
+This supplementary file accompanies the Giannini study cited in the
+manuscript. Use the original supplementary file and any preprocessing
+steps required by the analysis scripts.
+
+The E3 derivation datasets overlap with cohorts used in this study;
+the E3 comparison therefore has a shared-cohort context.
+
+Additional input guidance is provided in [data/README.md](data/README.md).
+
+## Software environment
+
+The analyses were performed in R.
+
+Environment records are stored under [environment](environment/).
+Use the record corresponding to the relevant analysis stage and
+execution environment.
+
+Bulk and single-cell analyses may require different package sets.
+Relevant packages include:
+
+- Bulk analyses: GEOquery, limma, metafor, clusterProfiler,
+  org.Hs.eg.db, fgsea, msigdbr, xCell, enrichR, and pROC.
+- Single-cell analyses: SeuratObject, Matrix, and UCell.
+- Visualization and data handling: ggplot2 and additional packages
+  imported by the individual scripts.
+
+This list summarizes major dependencies; the scripts and
+stage-specific environment records determine the complete requirements.
+
+Do not substitute current package versions for the versions used
+to generate the manuscript results without checking compatibility.
+
+## Running the analyses
 
 Clone the repository:
 
@@ -145,51 +139,99 @@ Clone the repository:
 git clone https://github.com/rain05494-star/sepsis-mortality-transcriptomics.git
 cd sepsis-mortality-transcriptomics
 ```
-Place all required GEO input files in:
-```text
-data/
-Then run:
-Rscript code/sepsis_mortality_transcriptomics_analysis.R
-Alternatively, from an R session opened at the repository root:
-source("code/sepsis_mortality_transcriptomics_analysis.R")
-The script assumes that the working directory is the repository root. If running from another directory, provide or modify the project root path in the configuration section of the script.
-## Expected outputs
 
-The script generates output folders under:
+Before running scripts:
 
-```text
-results_meta/
-├── 01_preprocessing/
-├── 02_discovery_meta/
-├── 03_functional_annotation/
-├── 04_GSE65682/
-├── 05_triple_cohort/
-├── 06_drug/
-├── 07_tables/
-└── 08_Giannini_sensitivity/
-```
+1. Obtain the required input files.
+2. Identify the scripts corresponding to the intended analysis stage.
+3. Review the software requirements.
+4. Update project, input, and output paths in the configuration sections.
+5. Confirm that upstream outputs required by downstream scripts exist.
 
-## Randomness and reproducibility
+Some scripts contain server-specific paths. Moving a script into
+`code/bulk/` or `code/SCRNA/` does not automatically update its
+internal file paths.
 
-Random seeds are set in the analysis script for:
+Placing input files in the repository's `data/` directory also does
+not automatically configure every script.
 
-- Outcome-label permutation analyses.
-- Random-gene PC1 reference analyses.
-- Any other simulation-based or resampling-based procedures.
+### Analysis stages
 
-The main deterministic analyses should reproduce exactly when the same input files, software versions, and local settings are used.
+The bulk workflow covers:
 
-Analyses using external online resources may show minor changes over time because the underlying databases are updated.
-## External resources and access dates
+1. Input processing and gene mapping.
+2. Cohort-specific mortality contrasts and cross-cohort integration.
+3. Functional annotation and enrichment.
+4. External assessment and E3 comparisons.
+5. Exploratory MARS endotype analyses.
+6. Figure generation and table assembly.
 
-The following public resources were used:
+The single-cell workflow covers:
 
-| Resource | Purpose | Access or cutoff date |
-|---|---|---|
-| GEO | Public expression datasets and platform annotations | July 19, 2026 |
-| MSigDB Hallmark via `msigdbr` | Hallmark GSEA gene sets | July 19, 2026 |
-| Enrichr | Transcription factor target-set enrichment and exploratory perturbational annotation | July 19, 2026 |
-| DGIdb v5 | Curated drug-gene interaction records | July 19, 2026 |
-| PubMed E-utilities | Bibliometric counts for sepsis-related compound mentions | Publication-date cutoff: July 19, 2026 |
+1. Reference-object inspection, gene mapping, and detectability.
+2. Donor-state gene-expression and transcript-contribution summaries.
+3. Program scores and program-level contribution profiles.
+4. E3-defined subset comparisons and leave-one-gene-out analyses.
+5. Technical sensitivity and acute–convalescent analyses.
+6. Figure generation and table assembly.
 
-Because Enrichr, DGIdb, PubMed, MSigDB, and gene annotation resources are periodically updated, rerunning the analysis at a later date may produce minor differences in database-derived annotations.
+These stages describe the analytical workflow. Follow the verified
+script-level instructions in each code directory rather than treating
+every script in the directory as a sequential pipeline.
+
+## Outputs
+
+Depending on the script, outputs include:
+
+- Gene-level differential-expression and signature tables.
+- Functional enrichment results.
+- External-assessment and MARS endotype summaries.
+- Gene- and program-level single-cell reference mappings.
+- Donor-aware program-score and transcript-contribution summaries.
+- Sensitivity-analysis and quality-control tables.
+- Figure files and supplementary-table source files.
+
+Output paths and filenames are defined by the individual scripts.
+
+Keep outputs from distinct runs separate and ensure that plotting
+and table-assembly scripts use the intended upstream results.
+
+## Reproducibility
+
+Reproduction requires matching:
+
+- Input data and sample selections.
+- Gene identifiers and platform annotations.
+- Reference-object annotations.
+- Gene-set definitions and analysis thresholds.
+- Software versions.
+- Random seeds for resampling procedures.
+- Annotation-library versions or fixed term–gene mappings.
+
+Where an analysis uses cached annotation resources or fixed mappings,
+reuse those resources when reproducing the reported results.
+A fresh online query may return different annotations.
+
+Retain run logs and provenance files to connect each output to its
+input files, script version, and execution environment.
+
+## Versioning and citation
+
+The `main` branch contains ongoing repository updates.
+
+For manuscript reproduction, use the tagged release cited in the
+submitted manuscript. Changes committed to `main` are not
+automatically included in an earlier tagged release.
+
+Available releases:
+https://github.com/rain05494-star/sepsis-mortality-transcriptomics/releases
+
+Software citation metadata is provided in [CITATION.cff](CITATION.cff).
+Use the citation metadata associated with the release being used.
+
+## License
+
+Repository code is distributed under the [MIT License](LICENSE).
+
+Third-party datasets and reference resources remain subject to
+the terms of their original providers.
