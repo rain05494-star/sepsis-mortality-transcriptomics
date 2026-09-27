@@ -1,34 +1,117 @@
-# Data directory
+# Data sources and input preparation
 
-This directory is intended for locally downloaded public GEO input files.
+This directory documents the data sources and input requirements for the
+bulk transcriptomic and single-cell analyses.
 
-The raw and processed GEO files are not redistributed in this repository. Users should download the required files directly from the Gene Expression Omnibus (GEO).
+The public expression datasets are not redistributed in this repository.
+Download the required expression data, annotations, and metadata from
+the original sources, then configure the input paths in the analysis scripts.
 
-## Required GEO datasets
+## GEO datasets
 
-The analysis uses the following public GEO datasets:
+| GEO accession | Role in this study | Data used |
+| --- | --- | --- |
+| [GSE272769](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE272769) | Discovery cohort | Whole-blood transcriptomic profiles and 30-day mortality metadata |
+| [GSE95233](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE95233) | Discovery cohort | Admission day-1 whole-blood profiles and 28-day mortality metadata |
+| [GSE65682](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE65682) | External assessment and exploratory MARS analyses | Whole-blood profiles, 28-day mortality metadata, and published MARS endotype annotations |
+| [GSE216009](https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE216009) | Single-cell reference mapping | Processed whole-blood single-cell data with source-defined cell-state and sample annotations |
 
-- GSE272769
-- GSE95233
-- GSE65682
+See [GEO_accessions.txt](GEO_accessions.txt) for additional dataset descriptions.
 
-## Download links
+## Bulk transcriptomic inputs
 
-- GSE272769: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE272769
-- GSE95233: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE95233
-- GSE65682: https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE65682
+Bulk analysis scripts are located in [code/bulk](../code/bulk/).
 
-## Expected local placement
+Required inputs include:
 
-After downloading the GEO Series Matrix files and the corresponding platform annotation files, place them in this directory.
+- Processed expression matrices for the three bulk cohorts.
+- Corresponding platform annotations for probe-to-gene mapping.
+- Sample metadata identifying the analyzed samples and mortality outcomes.
+- Published MARS endotype annotations for the relevant GSE65682 samples.
+- The Giannini E3 reference gene set for overlap analyses.
 
-A typical local structure is:
+Use the expression matrices and annotation files required by the specific
+script. GEO download filenames can differ from local filenames, so confirm
+the input configuration before execution.
 
-```text
-data/
-├── GSE272769_series_matrix.txt.gz
-├── GSE95233_series_matrix.txt.gz
-├── GSE65682_series_matrix.txt.gz
-├── GPLxxxx_annotation_file_for_GSE272769.txt.gz
-├── GPLxxxx_annotation_file_for_GSE95233.txt.gz
-└── GPL13667_annotation_file_for_GSE65682.txt.gz
+For GSE95233, the discovery analysis uses admission day-1 samples only.
+
+## Single-cell reference inputs
+
+Single-cell analysis scripts are located in [code/SCRNA](../code/SCRNA/).
+
+The analyses use the processed GSE216009 reference object, retaining
+the source-defined cell-state annotations.
+
+The local reference-object filename used in the analysis scripts is:
+
+`GSE216009_rhapsody_wholeblood_sobj.rds.gz`
+
+This is the filename expected by the scripts; it should not be interpreted
+as a verified GEO download filename.
+
+The supplied analysis scripts access:
+
+- The RNA count assay or count layer.
+- `fine_annot`: fine cell-state annotations.
+- `sample_id`: sample identifiers.
+- `diagnosis`: condition labels.
+
+Primary mapping uses 151,837 acute-infection cells from 26 donors.
+Supplementary comparisons also use convalescent, healthy-control,
+and surgery-control samples from the reference object.
+
+Download the processed reference object from the original study's
+data resources and confirm that its structure and metadata match
+the script requirements. A raw count matrix alone does not supply
+all annotations required by these analyses.
+
+## Giannini E3 reference gene set
+
+The E3 comparison uses the supplementary file:
+
+`TableE3_Transcohort_DE_Genes.xlsx`
+
+This file accompanies the Giannini study cited in the manuscript.
+It is a published reference gene set, not an additional GEO dataset.
+
+Obtain the file from the original publication's supplementary materials.
+Use the input format required by the relevant analysis script.
+Renaming an Excel file to `.csv` does not convert its contents.
+
+## Input paths
+
+The scripts may use local or server-specific project directories.
+Downloading files into this repository's `data` directory does not
+automatically configure every script.
+
+Before running an analysis:
+
+1. Inspect the script's configuration section.
+2. Set the project directory and input file paths to your local locations.
+3. Confirm that the expected files, metadata fields, and sample labels exist.
+4. Keep upstream output paths consistent with downstream input paths.
+
+Where present, configuration variables such as `PROJECT_ROOT`,
+`INPUT_FILE`, and `INPUT_RDS` must be updated for your environment.
+
+## Intermediate files
+
+Some downstream single-cell scripts read outputs generated by earlier
+analysis stages, including gene-mapping audits, fixed signature definitions,
+cell-state ordering tables, and donor-state expression summaries.
+
+These intermediate files are analysis outputs, not separate GEO downloads.
+Run the required upstream stages before executing dependent scripts.
+
+## Data provenance
+
+Retain a record of:
+
+- The source accession or publication.
+- The downloaded filename and source location.
+- Any local renaming or format conversion.
+- The processed reference-object version used.
+- The software environment used for execution.
+
+No new primary datasets were generated in this study.
